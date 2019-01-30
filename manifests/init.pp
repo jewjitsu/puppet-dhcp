@@ -37,6 +37,7 @@ class dhcp (
   Boolean $authoritative                                  = true,
   Variant[Array[String],String[1]] $extra_config          = [],
   $dhcp_dir                                               = $dhcp::params::dhcp_dir,
+  Boolean $manage_dhcp_dir                                = $dhcp::params::manage_dhcp_dir,
   String $dhcpd_conf_filename                             = 'dhcpd.conf',
   $packagename                                            = $dhcp::params::packagename,
   $servicename                                            = $dhcp::params::servicename,
@@ -152,12 +153,12 @@ class dhcp (
     provider => $package_provider,
   }
 
-  file { $dhcp_dir:
-    mode    => '0755',
-    require => Package[$packagename],
+  if $manage_dhcp_dir {
+    file { $dhcp_dir:
+      mode    => '0755',
+      require => Package[$packagename],
+    }
   }
-
-
 
   case $facts['osfamily'] {
     'RedHat': {
