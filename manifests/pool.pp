@@ -15,9 +15,9 @@ define dhcp::pool (
   String $domain_name                       = '',
   $ignore_unknown                           = undef,
 ) {
-  include ::dhcp::params
 
-  $dhcp_dir = $dhcp::params::dhcp_dir
+  include dhcp
+  $dhcp_dir = $dhcp::dhcp_dir
 
   concat::fragment { "dhcp_pool_${name}":
     target  => "${dhcp_dir}/dhcpd.pools",
